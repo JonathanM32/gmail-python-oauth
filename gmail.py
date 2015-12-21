@@ -12,7 +12,10 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import run
 
-location = "/home/jonathan/Documents/client_secret.json"
+from os import environ as env
+from datetime import datetime
+
+location = env['HOME'] + "/client_secret.json" #variable for location of the client_secret.json file. If unspecified, it is set to the home folder of the default user.
 body = ""
 recipient = ""
 sender = ""
@@ -22,7 +25,7 @@ def sendMail(body, recipient, sender, subject):
 	"""This function/method sends mail. Takes 4 arguments (body, recipient, sender, and subject)"""
 
 	# Path to the client_secret.json file downloaded from the Developer Console
-	CLIENT_SECRET_FILE = (location)
+	CLIENT_SECRET_FILE = (location )
 
 	# Check https://developers.google.com/gmail/api/auth/scopes for all available scopes
 	OAUTH_SCOPE = 'https://www.googleapis.com/auth/gmail.compose'
@@ -56,7 +59,8 @@ def sendMail(body, recipient, sender, subject):
 
 	try:
 	  message = (gmail_service.users().messages().send(userId="me", body=body).execute())
-	  print('Message Id: %s' % message['id'])
-	  print(message)
+	  #print('Message Id: %s' % message['id'])
+	  #print(message)
+	  print("Message sent to: " + recipient + " @ " + datetime.now().strftime('%Y-%m-%d %I:%M:%S:%p'))
 	except Exception as error:
 	  print('An error occurred: %s' % error)
