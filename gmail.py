@@ -2,10 +2,14 @@
 # Filename: gmail.py
 """Sends email using OAuth and Gmail.""" 
 
+import pickle 
+
 import base64
 import httplib2
 
 from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
 
 from apiclient.discovery import build
 from oauth2client.client import flow_from_clientsecrets
@@ -15,17 +19,25 @@ from oauth2client.tools import run
 from os import environ as env
 from datetime import datetime
 
-location = env['HOME'] + "/client_secret.json" #variable for location of the client_secret.json file. If unspecified, it is set to the home folder of the default user.
 body = ""
 recipient = ""
 sender = ""
 subject = ""
 
-def sendMail(body, recipient, sender, subject):
-	"""This function/method sends mail. Takes 4 arguments (body, recipient, sender, and subject)"""
+def configure():
+	"""This function allows you to configure the location of you client_secret.json file."""
+	print ("gmail.configure allows you to set or change the location of client_secret.json file. This must be ran interactively!"
+	loc = raw_input("Please type the absolute path of the client_secret.json file: ")
+	print ("Hold on a sec'")
+	pickle.dump(loc, open("gmConfig.p", "wb"))
+	print ("Saved! You will not need to run this again unless you move your file or run this on a new computer.")
 
+def sendMail(body, recipient, sender, subject):
+	"""This function allows you to compose and send mail. It takes 4 arguments (body, recipient, sender, and subject)"""
+	
+	
 	# Path to the client_secret.json file downloaded from the Developer Console
-	CLIENT_SECRET_FILE = (location )
+	CLIENT_SECRET_FILE = pickle.load( open( "gmConfig.p", "rb" ) )
 
 	# Check https://developers.google.com/gmail/api/auth/scopes for all available scopes
 	OAUTH_SCOPE = 'https://www.googleapis.com/auth/gmail.compose'
@@ -63,4 +75,4 @@ def sendMail(body, recipient, sender, subject):
 	  #print(message)
 	  print("Message sent to: " + recipient + " @ " + datetime.now().strftime('%Y-%m-%d %I:%M:%S:%p'))
 	except Exception as error:
-	  print('An error occurred: %s' % error)
+	  print('An error occurred while sending a message. Maybe this error code will help: %s' % error)
