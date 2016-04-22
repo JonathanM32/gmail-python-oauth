@@ -26,7 +26,7 @@ subject = ""
 
 def configure():
 	"""This function allows you to configure the location of you client_secret.json file."""
-	print ("gmail.configure allows you to set or change the location of client_secret.json file. This must be ran interactively!"
+	print ("gmail.configure allows you to set or change the location of client_secret.json file. This must be ran interactively!")
 	loc = raw_input("Please type the absolute path of the client_secret.json file: ")
 	print ("Hold on a sec'")
 	pickle.dump(loc, open("gmConfig.p", "wb"))
