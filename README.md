@@ -1,4 +1,4 @@
-<b>Gmail Python OAuth Client:</b>
+<b>Gmail Python OAuth Module:</b>
 
 This is a simple python module that authenticates with Gmail using OAuth and sends a message.
 
